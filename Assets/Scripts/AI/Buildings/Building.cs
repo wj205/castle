@@ -12,6 +12,7 @@ public class Building : MonoBehaviour {
 	//CONTROLLERS
 	protected HandController _handController;
     protected UnitController _unitController;
+	protected BuildController _buildController;
 	protected Renderer _renderer;
 	protected Color _originalColor;
     protected Collider _collider;
@@ -27,7 +28,7 @@ public class Building : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.gameObject.layer = 2;
+		this.gameObject.layer = 0;
         this.gameObject.tag = "Building";
         this.id = _buildingID_++;
         this.state = BuildingState.PREBUILD;
@@ -37,6 +38,7 @@ public class Building : MonoBehaviour {
         this._collider.isTrigger = true;
         this._handController = GameObject.FindObjectOfType<HandController>().GetComponent<HandController>();
         this._unitController = GameObject.FindObjectOfType<UnitController>().GetComponent<UnitController>();
+		this._buildController = GameObject.FindObjectOfType<BuildController>().GetComponent<BuildController>();
         this._renderer = this.GetComponent<MeshRenderer>();
         this._originalColor = this._renderer.material.color;
         if (this.preBuilt) this.SwitchToState(BuildingState.BUILDING);
@@ -115,7 +117,7 @@ public class Building : MonoBehaviour {
     }
 	
 	public void Repair(){
-		this.gameObject.layer = 2;
+		this.gameObject.layer = 0;
 		_handController.ThrowUnitToRepair (this.gameObject);
 		//this.GetComponent<Health>().health = 10;
 		//this.SwitchToState (BuildingState.BUILDING);

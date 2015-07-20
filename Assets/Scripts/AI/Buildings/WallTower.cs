@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class WallTower : Building {
-
+	
     public Wall parent;
 
     public void SetParent(Wall p)
@@ -63,5 +63,17 @@ public class WallTower : Building {
         return null;
     }
 
+	//This may not be the final structure, just trying to get things working
+	void OnMouseOver()
+	{
+		//This will eventually call a function to check for double-clicks from some input manager (maybe MouseController)
+		//if(Input.GetMouseButtonDown (0)){
+		if(MouseController.GetDoubleClick ())
+		{
+			_buildController.isNewStartTower = false;
+			_buildController._startTower = this;
+			_buildController.SwitchToState (BuildController.BCState.STARTTOWER);
+		}
+	}
 
 }

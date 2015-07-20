@@ -6,6 +6,7 @@ public class HandController : MonoBehaviour {
 
     private BuildController _buildController;
     public GameObject ballPrefab;
+	public Minion minionPrefab;
 
     void Start()
     {
@@ -73,5 +74,38 @@ public class HandController : MonoBehaviour {
 		targetObj.GetComponent<Building>().SwitchToState (BuildingState.BUILDING);
 		targetObj.GetComponent<Health>().health = targetObj.GetComponent<Health>()._originalHealth;
 		Destroy (thrownUnit);
+	}
+
+	public void ThrowUnitToAttack(GameObject targetObj)
+	{
+		GameObject newUnit = (Instantiate (ballPrefab, _buildController.transform.position, Quaternion.identity) as GameObject);
+
+		//Vector3 target = targetObj.transform.position;
+		Vector3 target = targetObj.transform.position + (Vector3.Normalize (transform.position - targetObj.transform.position) * 7f);
+		Debug.Log (target);
+		Vector3 midPoint = (((target - transform.position) * 0.5f) + transform.position) + Vector3.up * 5f;
+		Vector3[] throwPath = new Vector3[] { transform.position, midPoint, target };
+
+		GameObject[] onCompleteParams = new GameObject[]{targetObj, newUnit};
+		Hashtable throwHash = iTween.Hash ("path", throwPath, "time", 2f, "easetype", iTween.EaseType.easeInQuad, "oncomplete", "AttackTarget", "onCompleteTarget", gameObject, "oncompleteparams", onCompleteParams);
+		StartCoroutine (ThrowUnitToAttackCoroutine(newUnit, throwHash));
+	}
+
+	IEnumerator ThrowUnitToAttackCoroutine(GameObject unit, Hashtable unitHash)
+	{
+		iTween.MoveTo (unit, unitHash);
+		yield return null;
+	}
+
+	void AttackTarget(GameObject[] objs)
+	{
+		Debug.Log ("calling attacktarget");
+		GameObject targetEnemy = objs[0];
+		GameObject thrownBall = objs[1];
+
+		Minion attackingUnit = (Instantiate (minionPrefab, thrownBall.transform.position, Quaternion.identity) as Minion);
+		Destroy (thrownBall);
+		attackingUnit.SetTarget (targetEnemy);
+		attackingUnit.SwitchToState (UnitState.MOVING);
 	}
 }

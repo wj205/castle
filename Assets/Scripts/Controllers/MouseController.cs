@@ -38,4 +38,26 @@ public class MouseController : MonoBehaviour {
         UpdateMousePosition();
         return _hit;
     }
+
+	public static bool GetMouseClick()
+	{
+		if(Input.GetMouseButtonDown (0)) { return true; }
+		else { return false; }
+	}
+
+	static float lastClickTime;
+	static bool firstClick;
+	public static bool GetDoubleClick(){
+		if(GetMouseClick ())
+		{
+			float timeDelta = Time.time - lastClickTime;
+			if(timeDelta < 0.2f){
+				lastClickTime = 0;
+				return true;
+			}else{
+				lastClickTime = Time.time;
+			}
+		}
+		return false;
+	}
 }

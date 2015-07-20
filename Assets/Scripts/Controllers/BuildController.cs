@@ -14,8 +14,8 @@ public class BuildController : MonoBehaviour
 
     private BCState state;
 
-    private WallTower _startTower;
-    private bool isNewStartTower = true;
+    public WallTower _startTower;
+    public bool isNewStartTower = true;
     private WallTower _endTower;
     private bool isNewEndTower = true;
     private WallChunk _newWall;
@@ -67,12 +67,16 @@ public class BuildController : MonoBehaviour
         }
     }
 
+	public BCState GetState()
+	{
+		return this.state;
+	}
+
     private void OnStartTower()
     {
-        this._startTower.StickToMouse();
+        //this._startTower.StickToMouse();
         if (Input.GetMouseButtonDown(1)) { this.SwitchToState(BCState.DESTROYING); }
-
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
             WallTower t = _startTower.GetCollidingTower();
             if (t) {
@@ -81,7 +85,8 @@ public class BuildController : MonoBehaviour
                 isNewStartTower = false; 
             }
             this.SwitchToState(BCState.ENDTOWER);
-        }
+        }*/
+		this.SwitchToState(BCState.ENDTOWER);
     }
 
     private void OnEndTower()
@@ -111,6 +116,8 @@ public class BuildController : MonoBehaviour
         }
         else
         {
+			//For some reason, destroying a wall before it's built (switching bcstate to DESTROYING) is giving an error on the next line. 
+			//Doesn't stop anything from working as far as I can tell, but I don't know why it's happening.
             _startTower.transform.LookAt(_endTower.transform);
             _endTower.transform.LookAt(_startTower.transform);
             _distance = Vector3.Distance(_startTower.transform.position, _endTower.transform.position);
@@ -169,7 +176,7 @@ public class BuildController : MonoBehaviour
     {
         if (_startTower)
         {
-            if (isNewStartTower) { _startTower.SwitchToState(BuildingState.DESTROYING); }
+            if (isNewStartTower) { /*_startTower.SwitchToState(BuildingState.DESTROYING)*/ Destroy (_startTower.gameObject); }
             else { _startTower.ResetColor(); }
             _startTower = null;
             isNewStartTower = true;
@@ -177,19 +184,22 @@ public class BuildController : MonoBehaviour
 
         if (_endTower)
         {
-            if (isNewEndTower) { _endTower.SwitchToState(BuildingState.DESTROYING); }
+            if (isNewEndTower) { /*_endTower.SwitchToState(BuildingState.DESTROYING)*/
+				Debug.Log ("adsf");
+				Destroy (this._endTower.gameObject); 
+			}
             else { _endTower.ResetColor(); }
             _endTower = null;
             isNewEndTower = true;
         }
 
-        Destroy(this._newWall);
+        Destroy(this._newWall.gameObject);
         this.SwitchToState(BCState.IDLE);
     }
 
     private void SwitchToStartTower() 
     {
-        _startTower = (Instantiate(towerPrefab, MouseController.GetFlooredMousePosition(), Quaternion.identity) as GameObject).GetComponent<WallTower>();
+        //_startTower = (Instantiate(towerPrefab, MouseController.GetFlooredMousePosition(), Quaternion.identity) as GameObject).GetComponent<WallTower>();
     }
     private void SwitchToEndTower() 
     {

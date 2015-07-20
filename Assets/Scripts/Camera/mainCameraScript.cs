@@ -3,14 +3,21 @@ using System.Collections;
 
 public class mainCameraScript : MonoBehaviour {
 
+	BuildController _buildController;
+
 	public float panSpeed;
 	public float zoomSpeed;
 	bool cannotMoveCamera;
+
+	void Start() {
+		_buildController = GameObject.FindObjectOfType<BuildController>().GetComponent<BuildController>();
+	}
 
 	void Update () {
 		if (!cannotMoveCamera) {
 			HandleEdgePanning ();
 			HandleZoom ();
+			HandleDragToMove ();
 		}
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			Debug.Log (viewToWorldLeft ().x);
@@ -42,9 +49,43 @@ public class mainCameraScript : MonoBehaviour {
 			Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize, 2f, 7.5f);
 		} else {
 			transform.Translate (0f, 0f, -mouseWheelMovement);
-			//transform.position = new Vector3 (transform.position.x, Mathf.Clamp (transform.position.y, 5, 20), transform.position.z);
+			transform.position = new Vector3 (transform.position.x, Mathf.Clamp (transform.position.y, 5, 20), transform.position.z);
 		}
 	}
+
+	float holdTimer;
+	Vector3 dragOrigin;
+	Vector3 oldPos;
+	void HandleDragToMove()
+	{
+		if(Input.GetMouseButtonDown (0))
+		{
+			dragOrigin = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+			oldPos = transform.position;
+		}
+		if(Input.GetMouseButton (0) && _buildController.GetState () != BuildController.BCState.ENDTOWER)
+		{
+			holdTimer += Time.deltaTime;
+			if(holdTimer > 0.1f)
+			{
+				//Put physical camera dragging stuff in here
+				Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;
+				Vector3 move = new Vector3(-pos.x, 0, -pos.y);
+				//transform.Translate (move, Space.World);
+				transform.position = oldPos + move * panSpeed;
+			}
+		}
+		if(Input.GetMouseButtonUp (0))
+		{
+			holdTimer = 0;
+		}
+	}
+
+
+
+
+
+
 
 	/*public bool finishedSnapping;
 	public Vector3 snapPosition;

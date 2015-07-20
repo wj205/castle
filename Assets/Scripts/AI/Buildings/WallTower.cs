@@ -48,6 +48,24 @@ public class WallTower : Building {
 	protected override void SwitchToIdle()
     {
         this.gameObject.layer = 0;
+
+        Barracks[] enemies = GameObject.FindObjectsOfType<Barracks>();
+
+        Debug.Log(enemies.Length);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i].converted) continue;
+            
+            Building b = enemies[i].GetComponent<Building>();
+            Debug.Log(b);
+
+            if (b.checkSurroundedByWall(30, 50))
+            {
+                Debug.Log("Surrounded!");
+                b.convertToFriendly();
+            }
+        }
     }
 
     public WallTower GetCollidingTower()

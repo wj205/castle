@@ -20,6 +20,7 @@ public class Building : MonoBehaviour {
     protected NavMeshObstacle _obstacle;
 
     public bool preBuilt = false;
+    public bool converted = false;
 
     protected static int _buildingID_ = 0;
 
@@ -101,7 +102,7 @@ public class Building : MonoBehaviour {
     protected virtual void SwitchToBuilding() { }
     protected virtual void SwitchToIdle() 
     {
-        //this._obstacle.enabled = true;
+        this._obstacle.enabled = true;
     }
     protected virtual void SwitchToDestroying() 
     {
@@ -151,6 +152,44 @@ public class Building : MonoBehaviour {
     public void ResetColor()
     {
         this._renderer.material.color = _originalColor;
+    }
+
+    public virtual void convertToFriendly()
+    {
+        if (!converted) converted = !converted;
+        this.tag = "Building";
+    }
+
+    public bool checkSurroundedByWall(int angle, float range)
+    {
+        int startangle = 0;
+
+        RaycastHit[] hits;
+        bool found;
+
+        while (startangle <= 360)
+        {
+            found = false;
+            hits = Physics.RaycastAll(this.transform.position, Quaternion.Euler(0, startangle, 0) * transform.forward, range);
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                if (hits[i].collider.GetComponent<WallChunk>())
+                {
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                return false;
+            }
+
+            startangle += angle;
+        }
+
+
+        return true;
     }
 }
 

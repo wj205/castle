@@ -23,7 +23,6 @@ public class WallChunk : Building {
 	protected override void SwitchToDestroying(){
 		//Insert Destruction animation
 		//Change wall chunk model to "Destroyed" model
-		this.gameObject.layer = 0;
 		this._renderer.material.color = Color.green;
 	}
 
@@ -35,6 +34,7 @@ public class WallChunk : Building {
     protected override void SwitchToBuilding()
     {
         this._renderer.material.color = this._originalColor;
+        this.gameObject.layer = 0;
         this.SwitchToState(BuildingState.IDLE); //SKIPS IDLE FOR NOW. ONBUILD USED FOR ANIMATIONS
     }
 

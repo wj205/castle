@@ -69,8 +69,10 @@ public class DemonLemming : Unit {
     {
         Debug.Log("OnTriggerEnter- DemonLemming");
 
+        Debug.Log(other.tag);
+
         Building b = other.gameObject.GetComponent<Building>();
-        if (b && b.GetState() != BuildingState.PREBUILD && b.GetState () != BuildingState.DESTROYING)
+        if (b && b.converted == true && b.GetState() != BuildingState.PREBUILD && b.GetState () != BuildingState.DESTROYING)
         {
             Debug.Log("OnTriggerEnter - Demon Lemming - Collided with Building");
             other.gameObject.GetComponent<Health>().dealDamage(this.damage, "explode");

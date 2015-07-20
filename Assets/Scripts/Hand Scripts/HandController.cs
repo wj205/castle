@@ -87,7 +87,7 @@ public class HandController : MonoBehaviour {
 		Vector3[] throwPath = new Vector3[] { transform.position, midPoint, target };
 
 		GameObject[] onCompleteParams = new GameObject[]{targetObj, newUnit};
-		Hashtable throwHash = iTween.Hash ("path", throwPath, "time", 2f, "easetype", iTween.EaseType.easeInQuad, "oncomplete", "AttackTarget", "onCompleteTarget", gameObject, "oncompleteparams", onCompleteParams);
+		Hashtable throwHash = iTween.Hash ("path", throwPath, "time", 1f, "easetype", iTween.EaseType.easeInQuad, "oncomplete", "AttackTarget", "onCompleteTarget", gameObject, "oncompleteparams", onCompleteParams);
 		StartCoroutine (ThrowUnitToAttackCoroutine(newUnit, throwHash));
 	}
 
@@ -106,5 +106,8 @@ public class HandController : MonoBehaviour {
 		Minion attackingUnit = (Instantiate (minionPrefab, thrownBall.transform.position, Quaternion.identity) as Minion);
 		Destroy (thrownBall);
 		attackingUnit.SetGoal (targetEnemy.transform.position);
+
+		//This doesn't work
+		//attackingUnit.SetTarget (targetEnemy);
 	}
 }

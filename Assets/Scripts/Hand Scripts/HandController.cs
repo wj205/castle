@@ -105,7 +105,6 @@ public class HandController : MonoBehaviour {
 
 		Minion attackingUnit = (Instantiate (minionPrefab, thrownBall.transform.position, Quaternion.identity) as Minion);
 		Destroy (thrownBall);
-		attackingUnit.SetTarget (targetEnemy);
-		attackingUnit.SwitchToState (UnitState.MOVING);
+		attackingUnit.SetGoal (targetEnemy.transform.position);
 	}
 }

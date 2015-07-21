@@ -69,8 +69,10 @@ public class DemonLemming : Unit {
     {
         Debug.Log("OnTriggerEnter- DemonLemming");
 
+        Debug.Log(other.tag);
+
         Building b = other.gameObject.GetComponent<Building>();
-        if (b && b.GetState() != BuildingState.PREBUILD && b.GetState () != BuildingState.DESTROYING)
+        if (b && b.converted == true && b.GetState() != BuildingState.PREBUILD && b.GetState () != BuildingState.DESTROYING)
         {
             Debug.Log("OnTriggerEnter - Demon Lemming - Collided with Building");
             other.gameObject.GetComponent<Health>().dealDamage(this.damage, "explode");
@@ -88,14 +90,14 @@ public class DemonLemming : Unit {
 
         for (int i = 0; i < walls.Length; i++)
         {
-            float dist = Vector3.Distance(this.transform.position, walls[i].transform.position);
-            if (dist < min)
-            {
-                min = dist;
-				if(walls[i].GetState () != BuildingState.DESTROYING){
-                	wall = walls[i];
-				}
-            }
+			if(walls[i].GetState () != BuildingState.DESTROYING){
+	            float dist = Vector3.Distance(this.transform.position, walls[i].transform.position);
+	            if (dist < min)
+	            {
+	                min = dist;
+					wall = walls[i];
+	            }
+			}
         }
 
         return wall;

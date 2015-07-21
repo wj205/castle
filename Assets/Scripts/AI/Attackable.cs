@@ -11,7 +11,7 @@ public class Attackable : MonoBehaviour {
 
 	void OnMouseOver()
 	{
-		if(MouseController.GetDoubleClick () && UnitController.idleUnitCount > 0)
+		if(MouseController.GetMouseClick () && UnitController.idleUnitCount > 0)
 		{
 			_handController.ThrowUnitToAttack (gameObject);
 			UnitController.idleUnitCount --;

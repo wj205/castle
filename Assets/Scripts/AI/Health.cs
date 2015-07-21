@@ -30,9 +30,11 @@ public class Health : MonoBehaviour {
 		{
 			this.GetComponent<Building>().SwitchToState(BuildingState.DESTROYING);
         	//Destroy(this.gameObject);
-		}else
+		}else if(this.GetComponent<Unit>() != null)
 		{
 			this.GetComponent<Unit>().SwitchToState (UnitState.DESTROYING);
+		}else{
+			Destroy (this.gameObject);
 		}
     }
 }

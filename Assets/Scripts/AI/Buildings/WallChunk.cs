@@ -57,9 +57,8 @@ public class WallChunk : Building {
 			_buildController._startTower = (Instantiate(_buildController.towerPrefab, this.transform.position, Quaternion.identity) as GameObject).GetComponent<WallTower>();
 			_buildController.SwitchToState (BuildController.BCState.STARTTOWER);
 		}
-		if(MouseController.GetMouseClick () && this.GetState () == BuildingState.DESTROYING)
-		{
-
+		if(MouseController.GetMouseClick()){
+			Debug.Log (this.GetState ().ToString ());
 		}
 	}
 

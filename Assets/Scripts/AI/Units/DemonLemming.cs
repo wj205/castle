@@ -90,14 +90,14 @@ public class DemonLemming : Unit {
 
         for (int i = 0; i < walls.Length; i++)
         {
-            float dist = Vector3.Distance(this.transform.position, walls[i].transform.position);
-            if (dist < min)
-            {
-                min = dist;
-				if(walls[i].GetState () != BuildingState.DESTROYING){
-                	wall = walls[i];
-				}
-            }
+			if(walls[i].GetState () != BuildingState.DESTROYING){
+	            float dist = Vector3.Distance(this.transform.position, walls[i].transform.position);
+	            if (dist < min)
+	            {
+	                min = dist;
+					wall = walls[i];
+	            }
+			}
         }
 
         return wall;

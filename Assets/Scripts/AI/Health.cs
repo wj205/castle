@@ -26,7 +26,13 @@ public class Health : MonoBehaviour {
 
     protected virtual void OnDestroy()
     {	
-		this.GetComponent<Building>().SwitchToState(BuildingState.DESTROYING);
-        //Destroy(this.gameObject);
+		if(this.GetComponent<Building>() != null)
+		{
+			this.GetComponent<Building>().SwitchToState(BuildingState.DESTROYING);
+        	//Destroy(this.gameObject);
+		}else
+		{
+			this.GetComponent<Unit>().SwitchToState (UnitState.DESTROYING);
+		}
     }
 }

@@ -15,7 +15,7 @@ public class SelectableBuilding : MonoBehaviour {
     void OnMouseOver(){
 		if(thisBuilding.GetState() == BuildingState.DESTROYING)
 		{
-	        if (Input.GetMouseButtonDown (0)) 
+	        /*if (Input.GetMouseButtonDown (0)) 
 			{
 
 				if(selectedBuilding != null)
@@ -34,6 +34,12 @@ public class SelectableBuilding : MonoBehaviour {
 					selectedBuilding = null;
 					UnitController.idleUnitCount --;
 				}
+			}*/
+			if(MouseController.GetMouseClick () && UnitController.idleUnitCount >0)
+			{
+				this.GetComponent<MeshRenderer>().material.color = Color.blue;
+				this.GetComponent<Building>().Repair();
+				UnitController.idleUnitCount --;
 			}
 		}
     }

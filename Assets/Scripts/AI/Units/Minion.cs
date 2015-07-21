@@ -30,4 +30,14 @@ public class Minion : Unit {
         this.agent.enabled = false;
         base.SwitchToCustom();
     }
+
+	void OnTriggerEnter(Collider other)
+	{
+		if(other.tag == "Enemy")
+		{
+			Debug.Log ("trigger entered - enemy");
+			other.GetComponent<Health>().dealDamage (5, "explode");
+			this.SwitchToState (UnitState.DESTROYING);
+		}
+	}
 }

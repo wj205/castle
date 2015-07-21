@@ -86,7 +86,7 @@ public class WallTower : Building {
 	{
 		//This will eventually call a function to check for double-clicks from some input manager (maybe MouseController)
 		//if(Input.GetMouseButtonDown (0)){
-		if(MouseController.GetDoubleClick ())
+		if(MouseController.GetMouseClick ())
 		{
 			_buildController.isNewStartTower = false;
 			_buildController._startTower = this;

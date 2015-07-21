@@ -51,14 +51,11 @@ public class WallChunk : Building {
 	//This may not be the final structure, just trying to get things working
 	void OnMouseOver(){
 		//This will eventually call a function to check for double-clicks from some input manager (maybe MouseController)
-		if(MouseController.GetDoubleClick() && this.GetState () != BuildingState.DESTROYING){
+		if(MouseController.GetMouseClick() && this.GetState () != BuildingState.DESTROYING){
 			Debug.Log ("click on wallchunk");
 			_buildController.isNewStartTower = true;
 			_buildController._startTower = (Instantiate(_buildController.towerPrefab, this.transform.position, Quaternion.identity) as GameObject).GetComponent<WallTower>();
 			_buildController.SwitchToState (BuildController.BCState.STARTTOWER);
-		}
-		if(MouseController.GetMouseClick()){
-			Debug.Log (this.GetState ().ToString ());
 		}
 	}
 
